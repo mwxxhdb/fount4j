@@ -9,9 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.fount4j.security.csrf.CsrfToken.ATTRIBUTE_NAME;
 import static java.util.Optional.ofNullable;
@@ -19,7 +19,7 @@ import static java.util.function.Predicate.not;
 
 @Slf4j
 public class CsrfInterceptor implements HandlerInterceptor {
-    private static final Map<String, CsrfToken> CACHE = new HashMap<>(100);
+    private static final Map<String, CsrfToken> CACHE = new ConcurrentHashMap<>(100);
 
     @Value("${fount4j.security.csrf.expireInSeconds:86400}")
     private int defaultExpireInSeconds;
@@ -53,12 +53,8 @@ public class CsrfInterceptor implements HandlerInterceptor {
         if (token == null) throw new NoCsrfTokenException();
 
         cleanCache();
-
         CsrfToken csrfToken = CACHE.remove(token);
         if (csrfToken == null) throw new InvalidCsrfTokenException(token);
-        if (!request.getSession().getId().equals(csrfToken.getSessionId())) {
-            throw new InvalidCsrfTokenException(token, "Session id not match");
-        }
         return true;
     }
 
@@ -78,14 +74,13 @@ public class CsrfInterceptor implements HandlerInterceptor {
 
         var token = UUID.randomUUID().toString();
         var csrfToken = new CsrfToken.CsrfTokenBuilder()
-            .token(UUID.randomUUID().toString())
+            .token(token)
             .expireTime(ofNullable(config)
                 .map(SetCsrfToken::expireInSeconds)
                 .map(seconds -> System.currentTimeMillis() + seconds * 1000)
                 .orElseGet(() -> System.currentTimeMillis() + defaultExpireInSeconds * 1000L))
             .headerName(ofNullable(config).map(SetCsrfToken::headerName).filter(not(String::isEmpty)).orElse(defaultHeaderName))
             .parameterName(ofNullable(config).map(SetCsrfToken::parameterName).filter(not(String::isEmpty)).orElse(defaultParameterName))
-            .sessionId(request.getSession().getId())
             .build();
         CACHE.put(token, csrfToken);
         request.setAttribute(ATTRIBUTE_NAME, csrfToken);

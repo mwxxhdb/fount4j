@@ -8,15 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.imageio.event.IIOWriteProgressListener;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,19 +42,19 @@ class CsrfInterceptorTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    void shouldSetDefaultCsrfToken() {
+    void when_NoAnnotation_then_SetDefaultCsrfToken() {
         var bodyAndDoc = requestAndParseBody(Routes.SET_DEFAULT_CSRF);
         assertTokenInMetaTags(bodyAndDoc, CsrfToken.DEFAULT_HEADER_NAME, CsrfToken.ATTRIBUTE_NAME);
     }
 
     @Test
-    void shouldSetCustomCsrfToken() {
+    void when_HaveAnnotation_then_SetCustomizedCsrfToken() {
         var bodyAndDoc = requestAndParseBody(Routes.SET_CUSTOM_CSRF);
         assertTokenInMetaTags(bodyAndDoc, CUSTOM_HEADER, CUSTOM_PARAM);
     }
 
     @Test
-    void shouldNotSetCsrfToken() {
+    void when_DisableInAnnotation_then_ShouldNotSetCsrfToken() {
         var bodyAndDoc = requestAndParseBody(Routes.NOT_SET_CSRF);
         var body = bodyAndDoc.getFirst();
         var doc = bodyAndDoc.getSecond();
@@ -61,9 +64,41 @@ class CsrfInterceptorTest {
     }
 
     @Test
-    void shouldNotAcceptRequestIfNotProvideCsrfToken() {
-        var resp = testRestTemplate.postForEntity(Routes.CHECK_CSRF, Map.of(PARAMETER, "shouldNotAcceptRequest"), String.class);
+    void when_ProvideValidCsrfToken_then_ShouldAcceptRequest() {
+        var resp = testRestTemplate.getForEntity(Routes.SET_DEFAULT_CSRF, String.class);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var body = resp.getBody();
+        assertThat(body).isNotNull();
+        var doc = Jsoup.parse(body);
+        var token = getMetaContent(doc, CsrfToken.ATTRIBUTE_NAME);
+        resp = testRestTemplate.postForEntity(Routes.CHECK_CSRF, createFormEntity(Map.of(PARAMETER, "ShouldAcceptRequest", CsrfToken.ATTRIBUTE_NAME, token)), String.class);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
+    @Test
+    void when_NotProvideCsrfToken_then_ShouldNotAcceptRequest() {
+        var resp = testRestTemplate.postForEntity(Routes.CHECK_CSRF, createFormEntity(Map.of(PARAMETER, "shouldNotAcceptRequest")), String.class);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    void when_ProvideInvalidCsrfToken_then_ShouldNotAcceptRequest() {
+        var resp = testRestTemplate.getForEntity(Routes.SET_DEFAULT_CSRF, String.class);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var body = resp.getBody();
+        assertThat(body).isNotNull();
+        var doc = Jsoup.parse(body);
+        var token = getMetaContent(doc, CsrfToken.ATTRIBUTE_NAME);
+        resp = testRestTemplate.postForEntity(Routes.CHECK_CSRF, createFormEntity(Map.of(PARAMETER, "ShouldNotAcceptRequest", CsrfToken.ATTRIBUTE_NAME, token + "makeTokenInvalid")), String.class);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private HttpEntity<MultiValueMap<String, String>> createFormEntity(Map<String, String> data) {
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        data.forEach(map::add);
+        return new HttpEntity<>(map, headers);
     }
 
     private void assertTokenInMetaTags(TwoResults<String, Document> bodyAndDoc, String expectedHeaderName, String paramName) {
