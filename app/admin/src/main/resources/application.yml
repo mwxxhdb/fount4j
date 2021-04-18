@@ -1,0 +1,10 @@
+spring:
+  main:
+    banner-mode: off
+  sa-token:
+    is-v: false
+  thymeleaf:
+    cache: false
+server:
+  servlet:
+    context-path: /admin

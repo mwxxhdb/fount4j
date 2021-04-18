@@ -1,0 +1,11 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.spring.io/snapshot' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'fount4j'
+
+include 'common:core'
+include 'app:admin'

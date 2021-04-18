@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="../static/css/login.css" th:href="@{/static/css/login.css}">
+</head>
+<body>
+<div id="app" layout:fragment="app">
+  <div class="bg"></div>
+  <div class="bg bg2"></div>
+  <div class="bg bg3"></div>
+
+  <el-tabs class="content">
+    <el-tab-pane label="Login" style="width: 300px">
+      <el-form :model="loginForm" id="loginForm" method="POST" th:action="@{/auth/login}" ref="loginForm" :rules="rules">
+        <el-form-item prop="username">
+          <el-input v-model="loginForm.username" suffix-icon="el-icon-user" placeholder="Account" name="username" ref="username" @keyup.enter="submitForm('loginForm')"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input v-model="loginForm.password" suffix-icon="el-icon-lock" placeholder="Password" show-password name="password" ref="password" @keyup.enter="submitForm('loginForm')"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="width: 100%" @click="submitForm('loginForm')">Login</el-button>
+        </el-form-item>
+      </el-form>
+    </el-tab-pane>
+  </el-tabs>
+</div>
+<script layout:fragment="bodyScript">
+  const App = {
+    data() {
+      return {
+        loginForm: {
+          username: '',
+          password: '',
+        },
+        rules: {
+          username: [
+            {required: true, message: 'username is required', trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: '密码不可为空', trigger: 'blur'}
+          ]
+        },
+      }
+    },
+    methods: {
+      submitForm(formName) {
+        this.$refs[formName].validate((valid, fields) => {
+          if (valid) {
+            document.forms['loginForm'].submit();
+          } else {
+            if (fields['username']) {
+              this.$refs['username'].focus();
+            } else if (fields['password']) {
+              this.$refs['password'].focus();
+            }
+            return false;
+          }
+        });
+      }
+    }
+  };
+  const app = Vue.createApp(App);
+  app.use(ElementPlus);
+  app.mount("#app");
+</script>
+</body>
+</html>

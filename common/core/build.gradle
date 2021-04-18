@@ -1,0 +1,7 @@
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.2'
+    compile 'cn.dev33:sa-token-spring-boot-starter:1.15.2'
+    testCompile 'org.jsoup:jsoup:1.13.1'
+}

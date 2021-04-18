@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="_csrf" th:if="${_csrf != null}" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:if="${_csrf != null}" th:content="${_csrf.headerName}"/>
+  <title>Page Title</title>
+  <link rel="stylesheet" href="../../static/css/element-plus.css" th:href="@{/static/css/element-plus.css}"/>
+</head>
+<body>
+<div layout:fragment="app"></div>
+<script src="../../static/js/vue.global.js" th:src="@{/static/js/vue.global.js}"></script>
+<script src="../../static/js/element-plus.js" th:src="@{/static/js/element-plus.js}"></script>
+<script layout:fragment="bodyScript"></script>
+</body>
+</html>
