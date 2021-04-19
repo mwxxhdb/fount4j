@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CsrfInterceptorConfig implements WebMvcConfigurer {
+public class CsrfConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(csrfTokenInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**");
