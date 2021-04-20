@@ -5,6 +5,17 @@ spring:
     is-v: false
   thymeleaf:
     cache: false
+  application:
+    name: admin
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        service-name: admin
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        health-check-interval: 10s
+        health-check-path: ${server.servlet.context-path}/actuator
 server:
   servlet:
     context-path: /admin
