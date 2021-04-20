@@ -6,20 +6,27 @@ import com.fount4j.security.csrf.InvalidCsrfTokenException;
 import com.fount4j.security.csrf.NoCsrfTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Morven
+ */
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionResolver {
     private final ObjectMapper objectMapper;
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler({NoCsrfTokenException.class, InvalidCsrfTokenException.class})
     public ModelAndView handleCsrfException(HttpServletRequest request, HttpServletResponse response) {
         if (isApiCall(request)) {
@@ -34,7 +41,7 @@ public class GlobalExceptionResolver {
     }
 
     private boolean isApiCall(HttpServletRequest request) {
-        if (request.getHeader("Accept").contains("json")) {
+        if (request.getHeader(HttpHeaders.ACCEPT).contains("json")) {
             return true;
         }
         String header = request.getHeader("X-Request-With");
