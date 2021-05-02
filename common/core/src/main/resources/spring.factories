@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.fount4j.ui.UIWebMvcConfig,\
-  com.fount4j.security.csrf.CsrfConfig
+  com.fount4j.security.csrf.CsrfConfig,\
+  com.fount4j.cache.RedisConfig
