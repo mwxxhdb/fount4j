@@ -1,6 +1,6 @@
 package com.fount4j.security.csrf;
 
-import com.fount4j.core.bo.TwoResults;
+import com.fount4j.base.bo.TwoResults;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;

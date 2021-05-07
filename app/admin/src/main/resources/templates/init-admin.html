@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+  <title th:text="#{auth.ui.init.title}">Init admin</title>
+  <link rel="stylesheet" href="../static/css/login.css" th:href="@{/static/css/login.css}">
+</head>
+<body>
+<div id="app" layout:fragment="app">
+  <div class="bg"></div>
+  <div class="bg bg2"></div>
+  <div class="bg bg3"></div>
+
+  <el-tabs class="content">
+    <el-tab-pane th:label="#{auth.ui.init.title}" style="width: 300px">
+      <el-form :model="dataForm" id="dataForm" method="POST" th:action="@{/auth/init}" ref="dataForm" :rules="rules">
+        <ft:csrf/>
+        <el-form-item prop="username">
+          <el-input v-model="dataForm.username" suffix-icon="el-icon-user" th:placeholder="#{auth.ui.login.input.username}" id="username" name="username" ref="username"
+                    @keyup.enter="submitForm('dataForm')"></el-input>
+        </el-form-item>
+        <el-form-item prop="email">
+          <el-input v-model="dataForm.email" suffix-icon="el-icon-user" th:placeholder="#{auth.ui.login.input.email}" id="email" name="email" ref="email"
+                    @keyup.enter="submitForm('dataForm')"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input v-model="dataForm.password" suffix-icon="el-icon-lock" th:placeholder="#{auth.ui.login.input.password}" show-password id="password" name="password" ref="password"
+                    @keyup.enter="submitForm('dataForm')"></el-input>
+        </el-form-item>
+        <el-form-item prop="confirmPassword">
+          <el-input v-model="dataForm.confirmPassword" suffix-icon="el-icon-lock" th:placeholder="#{auth.ui.login.input.password}" show-password id="confirmPassword" name="confirmPassword"
+                    ref="confirmPassword"
+                    @keyup.enter="submitForm('dataForm')"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="width: 100%" @click="submitForm('dataForm')" th:text="#{auth.ui.init.btn}" id="submitButton">Submit</el-button>
+        </el-form-item>
+      </el-form>
+    </el-tab-pane>
+  </el-tabs>
+</div>
+<script layout:fragment="bodyScript" th:inline="javascript">
+  /*<![CDATA[*/
+  const App = {
+    data() {
+      const validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error([[#{auth.ui.form.rule.password}]]));
+        } else {
+          if (this.dataForm.confirmPassword !== '') {
+            this.$refs.dataForm.validateField('confirmPassword');
+          }
+          callback();
+        }
+      };
+      const validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error([[#{auth.ui.form.rule.confirmPassword}]]));
+        } else if (value !== this.dataForm.password) {
+          callback(new Error([[#{auth.ui.form.rule.confirmPassword.diff}]]));
+        } else {
+          callback();
+        }
+      };
+      return {
+        dataForm: {
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        },
+        rules: {
+          username: [
+            {required: true, message: [[#{auth.ui.form.rule.username}]], trigger: 'blur'}
+          ],
+          email: [
+            {required: false},
+            {type: 'email', message: [[#{auth.ui.form.rule.email}]], trigger: 'blur'}
+          ],
+          password: [
+            {validator: validatePass, trigger: 'blur'}
+          ],
+          confirmPassword: [
+            {validator: validatePass2, trigger: 'blur'}
+          ]
+        },
+      }
+    },
+    methods: {
+      submitForm(formName) {
+        this.$refs[formName].validate((valid, fields) => {
+          if (valid) {
+            document.forms['dataForm'].submit();
+          } else {
+            if (fields['username']) {
+              this.$refs['username'].focus();
+            } else if (fields['email']) {
+              this.$refs['email'].focus();
+            } else if (fields['password']) {
+              this.$refs['password'].focus();
+            } else if (fields['confirmPassword']) {
+              this.$refs['confirmPassword'].focus();
+            }
+            return false;
+          }
+        });
+      },
+    },
+  };
+  const app = Vue.createApp(App);
+  app.use(ElementPlus);
+  app.mount("#app");
+  /*]]>*/
+</script>
+</body>
+</html>

@@ -12,22 +12,26 @@
   <div class="bg bg3"></div>
 
   <el-tabs class="content">
-    <el-tab-pane label="Login" style="width: 300px">
+    <el-tab-pane th:label="#{auth.ui.login.panel.title}" style="width: 300px">
       <el-form :model="loginForm" id="loginForm" method="POST" th:action="@{/auth/login}" ref="loginForm" :rules="rules">
+        <ft:csrf/>
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" suffix-icon="el-icon-user" placeholder="Account" name="username" ref="username" @keyup.enter="submitForm('loginForm')"></el-input>
+          <el-input v-model="loginForm.username" suffix-icon="el-icon-user" th:placeholder="#{auth.ui.login.input.username}" id="username" name="username" ref="username"
+                    @keyup.enter="submitForm('loginForm')"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" suffix-icon="el-icon-lock" placeholder="Password" show-password name="password" ref="password" @keyup.enter="submitForm('loginForm')"></el-input>
+          <el-input v-model="loginForm.password" suffix-icon="el-icon-lock" th:placeholder="#{auth.ui.login.input.password}" show-password id="password" name="password" ref="password"
+                    @keyup.enter="submitForm('loginForm')"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="submitForm('loginForm')">Login</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm('loginForm')" th:text="#{auth.ui.login.btn}" id="loginButton">Login</el-button>
         </el-form-item>
       </el-form>
     </el-tab-pane>
   </el-tabs>
 </div>
-<script layout:fragment="bodyScript">
+<script layout:fragment="bodyScript" th:inline="javascript">
+  /*<![CDATA[*/
   const App = {
     data() {
       return {
@@ -37,10 +41,10 @@
         },
         rules: {
           username: [
-            {required: true, message: 'username is required', trigger: 'blur'}
+            {required: true, message: [[#{auth.ui.login.rule.username}]], trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '密码不可为空', trigger: 'blur'}
+            {required: true, message: [[#{auth.ui.login.rule.password}]], trigger: 'blur'}
           ]
         },
       }
@@ -65,6 +69,7 @@
   const app = Vue.createApp(App);
   app.use(ElementPlus);
   app.mount("#app");
+  /*]]>*/
 </script>
 </body>
 </html>

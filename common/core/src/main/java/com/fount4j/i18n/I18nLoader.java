@@ -1,5 +1,6 @@
 package com.fount4j.i18n;
 
+import cn.hutool.setting.dialect.Props;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,11 +10,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.Properties;
 
 import static com.fount4j.i18n.RedisMessageSource.CACHE_KEY;
 import static com.fount4j.i18n.RedisMessageSource.createMessageKey;
@@ -25,7 +23,7 @@ import static com.fount4j.i18n.RedisMessageSource.createMessageKey;
 @Component
 public class I18nLoader {
 
-    @Value("${fount4j.i18n.supported-locales:en,zh-CN,sv-SE}")
+    @Value(I18nConfig.VALUE_SUPPORTED_LOCALES)
     private String supportedLocales;
 
     private final HashOperations<String, String, String> hashOperations;
@@ -46,18 +44,9 @@ public class I18nLoader {
                     log.warn("i18n_{}.properties does not exit", language);
                     return;
                 }
-                var props = new Properties();
-                try {
-                    props.load(res.getInputStream());
-                    props.forEach((k, v) ->
-                        hashOperations.putIfAbsent(CACHE_KEY,
-                            createMessageKey((String) k, language),
-                            new String(Objects.toString(v).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
-                        )
-                    );
-                } catch (IOException e) {
-                    log.error("Loading i18n_{}.properties failed", language, e);
-                }
+                Props.getProp(res.getPath(), StandardCharsets.UTF_8).forEach((k, v) ->
+                    hashOperations.putIfAbsent(CACHE_KEY, createMessageKey((String) k, language), v.toString())
+                );
             });
     }
 

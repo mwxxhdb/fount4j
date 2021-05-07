@@ -1,4 +1,4 @@
-package com.fount4j.core.bo;
+package com.fount4j.base.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +17,10 @@ public class BaseResult<T> {
     private T data;
     private String message;
 
+    public static <T> BaseResult<T> success() {
+        return new BaseResult<>(true, null, null);
+    }
+
     public static <T> BaseResult<T> success(T data) {
         return new BaseResult<>(true, data, null);
     }
@@ -25,7 +29,7 @@ public class BaseResult<T> {
         return new BaseResult<>(true, data, message);
     }
 
-    public static BaseResult<Void> fail(String message) {
+    public static <T> BaseResult<T> fail(String message) {
         return new BaseResult<>(false, null, message);
     }
 

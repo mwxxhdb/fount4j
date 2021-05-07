@@ -1,7 +1,7 @@
 package com.fount4j.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fount4j.core.bo.BaseResult;
+import com.fount4j.base.bo.BaseResult;
 import com.fount4j.security.csrf.InvalidCsrfTokenException;
 import com.fount4j.security.csrf.NoCsrfTokenException;
 import lombok.RequiredArgsConstructor;

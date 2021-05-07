@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+          http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
+
+    <changeSet id="1" author="Morven Hou">
+        <createTable tableName="user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_user_id" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints unique="true" uniqueConstraintName="uk_user_username" nullable="false"/>
+            </column>
+            <column name="mobile_phone" type="varchar(50)"/>
+            <column name="email" type="varchar(50)"/>
+            <column name="password" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salt" type="char(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="theme" type="varchar(20)"/>
+            <column name="country" type="varchar(3)"/>
+            <column name="language" type="varchar(3)"/>
+            <column name="timezone" type="varchar(20)"/>
+            <column name="create_time" type="datetime"/>
+            <column name="update_time" type="datetime"/>
+        </createTable>
+        <createTable tableName="role">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_role_id" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints unique="true" uniqueConstraintName="uk_role_name" nullable="false"/>
+            </column>
+            <column name="reverted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="datetime"/>
+            <column name="update_time" type="datetime"/>
+        </createTable>
+        <createTable tableName="user_role">
+            <column name="user_id" type="int">
+                <constraints primaryKey="true" primaryKeyName="pk_user_role" nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints primaryKey="true" primaryKeyName="pk_user_role" nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="permission">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_permission_id" nullable="false"/>
+            </column>
+            <column name="key" type="varchar(50)">
+                <constraints unique="true" uniqueConstraintName="uk_permission_key" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="datetime"/>
+            <column name="update_time" type="datetime"/>
+        </createTable>
+        <createTable tableName="role_permission">
+            <column name="role_id" type="int">
+                <constraints primaryKey="true" primaryKeyName="pk_role_permission" nullable="false"/>
+            </column>
+            <column name="permission_id" type="int">
+                <constraints primaryKey="true" primaryKeyName="pk_role_permission" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

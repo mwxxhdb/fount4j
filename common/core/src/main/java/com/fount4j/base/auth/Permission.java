@@ -1,4 +1,4 @@
-package com.fount4j.core.auth;
+package com.fount4j.base.auth;
 
 public @interface Permission {
     /**

@@ -7,6 +7,7 @@ dependencies {
     compile 'org.springframework.data:spring-data-redis:2.5.0'
     compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.2'
     compile 'cn.dev33:sa-token-spring-boot-starter:1.15.2'
+    compile 'cn.hutool:hutool-setting:5.6.4'
 
     testCompile 'org.jsoup:jsoup:1.13.1'
     testCompile "org.testcontainers:testcontainers:1.15.3"

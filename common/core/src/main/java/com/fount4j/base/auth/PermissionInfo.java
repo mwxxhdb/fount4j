@@ -1,15 +1,15 @@
-package com.fount4j.core.bo;
+package com.fount4j.base.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TwoResults<T, U> {
-    private T first;
-    private U second;
+public class PermissionInfo {
+    private String code;
+    private Permission.Type type;
 }

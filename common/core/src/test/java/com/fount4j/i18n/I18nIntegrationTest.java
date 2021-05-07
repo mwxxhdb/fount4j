@@ -10,7 +10,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import javax.websocket.server.PathParam;
 import java.util.Locale;
 
 import static com.fount4j.TestProperties.DISABLE_CONSUL;
@@ -53,7 +55,7 @@ class I18nIntegrationTest {
     @Test
     void swedishWithoutArgs() {
         var headers = new HttpHeaders();
-        headers.setAcceptLanguage(Locale.LanguageRange.parse("sv-SE"));
+        headers.setAcceptLanguage(Locale.LanguageRange.parse("sv"));
         var entity = new HttpEntity<>(headers);
         var resp = restTemplate.exchange(URI_MESSAGE, HttpMethod.GET, entity, String.class);
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);

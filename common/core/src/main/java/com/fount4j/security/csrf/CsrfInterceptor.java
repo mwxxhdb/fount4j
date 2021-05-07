@@ -1,5 +1,6 @@
 package com.fount4j.security.csrf;
 
+import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.fount4j.security.csrf.CsrfToken.ATTRIBUTE_NAME;
@@ -53,7 +53,7 @@ public class CsrfInterceptor implements HandlerInterceptor {
         if (token == null) throw new NoCsrfTokenException();
 
         cleanCache();
-        CsrfToken csrfToken = CACHE.remove(token);
+        var csrfToken = CACHE.remove(token);
         if (csrfToken == null) throw new InvalidCsrfTokenException(token);
         return true;
     }
@@ -72,7 +72,7 @@ public class CsrfInterceptor implements HandlerInterceptor {
 
         cleanCache();
 
-        var token = UUID.randomUUID().toString();
+        var token = IdUtil.fastUUID();
         var csrfToken = new CsrfToken.CsrfTokenBuilder()
             .token(token)
             .expireTime(ofNullable(config)

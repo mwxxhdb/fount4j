@@ -45,7 +45,7 @@ public class CsrfTokenTag extends AbstractProcessorDialect {
                 return;
             }
             CsrfToken token = (CsrfToken) csrf;
-            String hidden = "<input type=\"hidden\" name=\"" + token.getParameterName() + "\" value=\"" + token.getToken() + "\"/>";
+            String hidden = "<input type=\"hidden\" id=\"_fount4j_csrf_token\" name=\"" + token.getParameterName() + "\" value=\"" + token.getToken() + "\"/>";
             structureHandler.replaceWith(hidden, false);
         }
     }

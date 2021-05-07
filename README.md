@@ -15,7 +15,7 @@
 - MongoDB
 - MySQL
 - H2
-- [MyBatis Plus](https://github.com/baomidou/mybatis-plus)
+- Spring Data JPA
 
 ## 和其他常见框架的区别
 

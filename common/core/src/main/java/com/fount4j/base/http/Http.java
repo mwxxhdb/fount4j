@@ -1,4 +1,4 @@
-package com.fount4j.core.http;
+package com.fount4j.base.http;
 
 import lombok.experimental.UtilityClass;
 

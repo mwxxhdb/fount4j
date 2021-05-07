@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
  */
 @Configuration
 public class I18nConfig {
+    public static final String VALUE_SUPPORTED_LOCALES = "${fount4j.i18n.supported-locales:en,zh,sv}";
 
     @Bean
-    public LocaleResolver localeResolver(@Value("${fount4j.i18n.supported-locales:en,zh-CN,sv-SE}") String supportedLocales) {
+    public LocaleResolver localeResolver(@Value(VALUE_SUPPORTED_LOCALES) String supportedLocales) {
         var localeResolver = new SaTokenLocaleResolver();
         localeResolver.setSupportedLocales(Arrays.stream(supportedLocales.split(","))
             .map(Locale::forLanguageTag)

@@ -1,5 +1,6 @@
 package com.fount4j.i18n;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.AbstractMessageSource;
@@ -29,7 +30,11 @@ public class RedisMessageSource extends AbstractMessageSource {
     protected MessageFormat resolveCode(String code, Locale locale) {
         var lang = locale.getLanguage();
         var country = locale.getCountry();
-        var format = Optional.ofNullable(hashOperations.get(CACHE_KEY, createMessageKey(code, lang + "_" + country)))
+        var language = lang;
+        if (CharSequenceUtil.isNotEmpty(country)) {
+            language = language + "_" + country;
+        }
+        var format = Optional.ofNullable(hashOperations.get(CACHE_KEY, createMessageKey(code, language)))
             .or(() -> Optional.ofNullable(hashOperations.get(CACHE_KEY, createMessageKey(code, lang))))
             .orElseGet(() -> hashOperations.get(CACHE_KEY, createMessageKey(code, defaultLanguage)));
         return new MessageFormat(Objects.requireNonNullElse(format, code), locale);
