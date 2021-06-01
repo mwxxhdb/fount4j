@@ -1,0 +1,43 @@
+spring:
+  main:
+    banner-mode: off
+  sa-token:
+    is-v: false
+  thymeleaf:
+    cache: false
+  application:
+    name: admin
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        health-check-interval: 10s
+        health-check-path: ${server.servlet.context-path}/actuator
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:fount4j
+    username: sa
+    driver-class-name: org.h2.Driver
+    password: sa
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+        web-admin-password: sa
+server:
+  servlet:
+    context-path: /admin
+fount4j:
+  admin:
+    auto-init: true
+    username: ${FOUNT4J_ADMIN_USERNAME:admin}
+    password: ${FOUNT4J_ADMIN_PASSWORD:admin}
+    email: ${FOUNT4J_ADMIN_EMAIL:}

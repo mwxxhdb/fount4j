@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorate="~{layout/base}">
+
+<head>
+  <title>User - Fount4j</title>
+  <link rel="icon" href="../../../../../common-core/src/main/resources/static/images/favor.png" />
+
+  <link rel="stylesheet" href="../../../../../common-core/src/main/resources/static/css/element-plus.css" />
+  <link rel="stylesheet" href="../../../../../common-core/src/main/resources/static/iconfont/iconfont.css" />
+  <link rel="stylesheet" href="../../../../../common-core/src/main/resources/static/css/layout.css" />
+</head>
+
+<body>
+  <div id="app" layout:fragment="app">
+    <el-container style="height: 100%;">
+      <el-header style="padding-left: 0;">
+        <el-menu mode="horizontal" default-active="admin">
+          <el-menu-item :style="{paddingLeft: navCollapse?'0':'20px', paddingRight: navCollapse?'0':'20px'}">
+            <el-image src="../../../../../common-core/src/main/resources/static/images/logo-blue.png"
+              v-if="!navCollapse"></el-image>
+            <el-image src="../../../../../common-core/src/main/resources/static/images/favor.png" v-if="navCollapse"
+              style="width: 60px;">
+            </el-image>
+          </el-menu-item>
+          <el-menu-item>
+            <i class="el-icon-s-fold" v-if="!navCollapse" @click="navCollapse=true"></i>
+            <i class="el-icon-s-unfold" v-if="navCollapse" @click="navCollapse=false"></i>
+          </el-menu-item>
+          <el-menu-item index="admin">
+            <el-link :underline="false" href="">Admin</el-link>
+          </el-menu-item>
+          <el-menu-item index="release">
+            <el-link :underline="false" href="">Releases</el-link>
+          </el-menu-item>
+          <el-menu-item v-show="isLogon" index="profile" style="float: right;">
+            <el-avatar size="medium" :src="avatarUrl" />
+          </el-menu-item>
+          <el-menu-item v-show="!isLogon" style="float: right;">
+            <el-link :underline="false" :href="loginUrl">
+              Sign in
+            </el-link>
+          </el-menu-item>
+        </el-menu>
+      </el-header>
+      <el-container>
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+          <el-menu default-active="users" :collapse="navCollapse">
+            <el-submenu index="auth">
+              <template #title>
+                <i class="el-icon-user"></i>
+                <span>Auth</span>
+              </template>
+              <el-menu-item index="users">Users</el-menu-item>
+              <el-menu-item index="sessions">Sessions</el-menu-item>
+            </el-submenu>
+            <el-submenu index="configuration">
+              <template #title>
+                <i class="el-icon-setting"></i>
+                <span>Configuration</span>
+              </template>
+              <el-menu-item index="settings">Settings</el-menu-item>
+              <el-menu-item index="dictionary">Dictionary</el-menu-item>
+            </el-submenu>
+          </el-menu>
+        </el-aside>
+        <el-main>
+            <el-breadcrumb>
+              <el-breadcrumb-item>Admin</el-breadcrumb-item>
+              <el-breadcrumb-item>Auth</el-breadcrumb-item>
+              <el-breadcrumb-item>User</el-breadcrumb-item>
+            </el-breadcrumb>
+            <el-table :data="tableData.records" border style="width: 100%">
+              <el-table-column type="selection" width="55"> </el-table-column>
+              <el-table-column prop="username" label="Username" width="120"> </el-table-column>
+              <el-table-column prop="surname" label="Surname" width="180"> </el-table-column>
+              <el-table-column prop="givenName" label="givenName" width="180"> </el-table-column>
+              <el-table-column prop="email" label="email"></el-table-column>
+              <el-table-column prop="status" label="Status" width="120"></el-table-column>
+              <el-table-column label="Operation" width="180">
+                <template #default="scope">
+                  <el-button type="default" size="mini">Edit</el-button>
+                  <el-button type="danger" size="mini">Delete</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination @size-change="reload" @current-change="reload" :current-page="tableData.current"
+              :page-sizes="tableData.pageSizes" :page-size="tableData.pageSize"
+              layout="total, sizes, prev, pager, next, jumper" :total="tableData.total">
+            </el-pagination>
+        </el-main>
+      </el-container>
+    </el-container>
+
+  </div>
+  <script src="../../../../../common-core/src/main/resources/static/js/vue.global.js"></script>
+  <script src="../../../../../common-core/src/main/resources/static/js/element-plus.js"></script>
+  <script src="../../../../../common-core/src/main/resources/static/js/axios.min.js"></script>
+  <script src="../static/js/i18n.js"></script>
+  <script>
+    const GITLAB_URL = "https://gitlab.leandev.com"
+    axios.defaults.baseURL = '../static/data';
+  </script>
+  <script src="../static/js/index.js"></script>
+</body>
+
+</html>

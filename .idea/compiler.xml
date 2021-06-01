@@ -12,6 +12,7 @@
         <module name="fount4j.app.main" />
         <module name="fount4j.common.core.main" />
         <module name="fount4j.common.main" />
+        <module name="com.fount4j.fount4j.common.test.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />

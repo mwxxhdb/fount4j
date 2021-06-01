@@ -1,0 +1,61 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 1478860 */
+  src: url('iconfont.eot?t=1622096747458'); /* IE9 */
+  src: url('iconfont.eot?t=1622096747458#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1622096747458') format('woff2'),
+       url('iconfont.woff?t=1622096747458') format('woff'),
+       url('iconfont.ttf?t=1622096747458') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.el-icon-t-config:before {
+  content: "\e6b0";
+}
+
+.el-icon-t-auth:before {
+  content: "\e62c";
+}
+
+.el-icon-t-commit:before {
+  content: "\e6dc";
+}
+
+.el-icon-t-publish:before {
+  content: "\e622";
+}
+
+.el-icon-t-tag:before {
+  content: "\e65b";
+}
+
+.el-icon-t-save:before {
+  content: "\e600";
+}
+
+.el-icon-t-view:before {
+  content: "\e633";
+}
+
+.el-icon-t-view-off:before {
+  content: "\e634";
+}
+
+.el-icon-t-message:before {
+  content: "\e635";
+}
+
+.el-icon-t-message-unread:before {
+  content: "\e636";
+}
+
+.el-icon-t-flow:before {
+  content: "\e646";
+}
+

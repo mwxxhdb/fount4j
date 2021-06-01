@@ -1,0 +1,37 @@
+{
+    "pageSizes": [
+        20,
+        50,
+        100,
+        500
+    ],
+    "pageSize": 20,
+    "total": 158,
+    "current": 2,
+    "records": [
+        {
+            "username": "admin",
+            "surname": "zhang",
+            "givenName": "san",
+            "gender": 1,
+            "email": "zhangsan@163.com",
+            "status": "active"
+        },
+        {
+            "username": "lisi",
+            "surname": "li",
+            "givenName": "si",
+            "gender": 0,
+            "email": "lisi@163.com",
+            "status": "locked"
+        },
+        {
+            "username": "wangwu",
+            "surname": "wang",
+            "givenName": "wu",
+            "gender": 0,
+            "email": "wangwu@163.com",
+            "status": "inactive"
+        }
+    ]
+}

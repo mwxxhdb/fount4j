@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="_csrf" th:if="${_csrf != null}" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:if="${_csrf != null}" th:content="${_csrf.headerName}"/>
+  <meta name="_error_message" th:if="${ERROR_MESSAGE != null}" th:content="${ERROR_MESSAGE}" content="测试"/>
+  <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Fount4j</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css"/>
+  <link rel="stylesheet" href="../../static/css/layout.css" th:href="@{/static/css/layout.css}"/>
+</head>
+<body>
+<div layout:fragment="content" class="layout-content"></div>
+<script src="../../static/js/jquery-3.6.0.min.js" th:src="@{/static/js/jquery-3.6.0.min.js}"></script>
+<script src="../../static/js/semantic.min.js" th:src="@{/static/js/semantic.min.js}"></script>
+<script th:src="@{/i18n/messages.js}"></script>
+<script src="../../static/js/layout.js" th:src="@{/static/js/layout.js}"></script>
+<section layout:fragment="bodyScripts"></section>
+</body>
+</html>

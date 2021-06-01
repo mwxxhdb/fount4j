@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'org.springframework.boot' version '2.4.5'
+    id 'org.springframework.boot' version '2.5.0'
 }
 
 repositories {
@@ -9,6 +9,8 @@ repositories {
     maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
     maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
     mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
 test {
@@ -16,7 +18,7 @@ test {
 }
 
 ext {
-    set('springCloudVersion', "2020.0.2")
+    set('springCloudVersion', "2020.0.3-SNAPSHOT")
 }
 
 subprojects {
@@ -41,6 +43,8 @@ subprojects {
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
         mavenCentral()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
     }
 
     dependencies {
@@ -63,23 +67,25 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll { it.parent?.name?.equals('common') }) {
+configure(subprojects.findAll { it.name.startsWith('common') }) {
     bootJar { enabled = false }
     jar { enabled = true }
 }
 
-configure(subprojects.findAll { it.parent?.name?.equals('api') }) {
+configure(subprojects.findAll { it.name.startsWith('api') }) {
     bootJar { enabled = false }
     jar { enabled = true }
     dependencies {
-        implementation project(':common:core')
+        implementation project(':common-core')
         implementation 'org.springframework.boot:spring-boot-starter-web'
+        testImplementation project(':common-test')
     }
 }
 
-configure(subprojects.findAll { it -> it.parent?.name?.equals('app') }) {
+configure(subprojects.findAll { it -> it.name.startsWith('app') }) {
     dependencies {
-        implementation project(':common:core')
+        implementation project(':common-core')
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        testImplementation project(':common-test')
     }
 }

@@ -1,0 +1,86 @@
+{
+  "id": "1478860",
+  "name": "fount4j",
+  "font_family": "iconfont",
+  "css_prefix_text": "el-icon-t-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5102540",
+      "name": "ts-config",
+      "font_class": "config",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "18988162",
+      "name": "认证-authentication",
+      "font_class": "auth",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "4488598",
+      "name": "commit",
+      "font_class": "commit",
+      "unicode": "e6dc",
+      "unicode_decimal": 59100
+    },
+    {
+      "icon_id": "5096916",
+      "name": "publish",
+      "font_class": "publish",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "8577838",
+      "name": "tag",
+      "font_class": "tag",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "10782340",
+      "name": "save",
+      "font_class": "save",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "8776631",
+      "name": "view",
+      "font_class": "view",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "8776676",
+      "name": "view_off",
+      "font_class": "view-off",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "8776692",
+      "name": "message",
+      "font_class": "message",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "8776706",
+      "name": "message_unread",
+      "font_class": "message-unread",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "8777078",
+      "name": "flow",
+      "font_class": "flow",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    }
+  ]
+}

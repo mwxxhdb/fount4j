@@ -1,4 +1,5 @@
 rootProject.name = 'fount4j'
 
-include 'common:core'
-include 'app:admin'
+include 'common-core'
+include 'common-test'
+include 'app-admin'
