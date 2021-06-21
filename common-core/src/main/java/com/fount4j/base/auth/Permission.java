@@ -1,5 +1,8 @@
 package com.fount4j.base.auth;
 
+/**
+ * @author Morven
+ */
 public @interface Permission {
     /**
      * 权限代码，推荐使用 grandparent:parent:name-in-kebab-case 的格式

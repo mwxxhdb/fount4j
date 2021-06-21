@@ -7,6 +7,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.Column;
 import java.util.Date;
 
+/**
+ * @author Morven 2021-05-07
+ */
 public class BaseEntity {
     @CreatedDate
     @Column(name = "create_time", updatable = false)

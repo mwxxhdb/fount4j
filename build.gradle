@@ -1,7 +1,7 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'org.springframework.boot' version '2.5.0'
 }
 
 repositories {
@@ -18,7 +18,9 @@ test {
 }
 
 ext {
-    set('springCloudVersion', "2020.0.3-SNAPSHOT")
+    set('springCloudVersion', '2020.0.3-SNAPSHOT')
+    set('testContainersVersion', '1.15.3')
+    set('hutoolVersion', '5.7.2')
 }
 
 subprojects {
@@ -52,8 +54,8 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok'
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
     }
 
     dependencyManagement {
@@ -87,5 +89,43 @@ configure(subprojects.findAll { it -> it.name.startsWith('app') }) {
         implementation project(':common-core')
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
         testImplementation project(':common-test')
+    }
+}
+
+project(':common-core') {
+    dependencies {
+        api 'org.springframework.boot:spring-boot-starter-web'
+        api 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        api 'org.springframework.boot:spring-boot-starter-redis:1.4.7.RELEASE'
+        api 'redis.clients:jedis:3.6.0'
+        api 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
+        api 'org.springframework.data:spring-data-redis:2.5.1'
+        api 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.3'
+        api 'cn.dev33:sa-token-spring-boot-starter:1.19.0'
+        api "cn.hutool:hutool-setting:$hutoolVersion"
+
+        testImplementation 'org.jsoup:jsoup:1.13.1'
+        testImplementation project(':common-test')
+    }
+}
+
+project(':common-test') {
+    dependencies {
+        api "org.testcontainers:testcontainers:$testContainersVersion"
+        api "org.testcontainers:junit-jupiter:$testContainersVersion"
+        api 'org.springframework.boot:spring-boot-starter-web'
+        api 'org.springframework.boot:spring-boot-starter-test'
+    }
+}
+
+project(':app-admin') {
+    dependencies {
+        runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'mysql:mysql-connector-java'
+
+        implementation 'org.liquibase:liquibase-core'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation "cn.hutool:hutool-core:$hutoolVersion"
+        implementation "cn.hutool:hutool-crypto:$hutoolVersion"
     }
 }

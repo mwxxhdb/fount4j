@@ -1,7 +1,10 @@
-package com.fount4j.base.http;
+package com.fount4j.consts;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * @author Morven
+ */
 @UtilityClass
 public class Http {
     @UtilityClass

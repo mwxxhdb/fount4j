@@ -8,11 +8,9 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.20/18bcea7d5df4d49227b4a0743a536208ce4825bb/lombok-1.18.20.jar" />
         </processorPath>
-        <module name="fount4j.app.admin.main" />
-        <module name="fount4j.app.main" />
-        <module name="fount4j.common.core.main" />
-        <module name="fount4j.common.main" />
-        <module name="com.fount4j.fount4j.common.test.main" />
+        <module name="fount4j.common-core.main" />
+        <module name="fount4j.app-admin.main" />
+        <module name="fount4j.common-test.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />
